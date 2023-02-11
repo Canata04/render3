@@ -89,8 +89,19 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
         # Feel free to alter this value to suit your needs.
 default_dburl = "sqlite:///" + str(BASE_DIR/ "db.sqlite3")
 
-DATABSES = {
-    "default": config("DATABASE_URL", default=default_dburl, cast=dburl),}
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "postgres",
+            "USER": "postgres",
+            "PASSWORD": "postgres",
+            "HOST": "db",
+            "PORT": 5432,
+        }
+    }
+else:
+    DATABASES = {"default": dj_database_url.config()}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
